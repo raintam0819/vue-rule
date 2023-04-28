@@ -1,18 +1,41 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <unite-condition style="display: flex;">
+      <render-sub-condition :conditions="conditionRules.subConditions"></render-sub-condition>
+    </unite-condition>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import conditionRules from './conditionRules.js'
+
+import UniteCondition from './components/UniteCondition'
+import RenderSubCondition from './components/renderSubCondition'
+
+import EventBus from './utils/eventBus'
+import { getNode } from './utils'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
-  }
+    UniteCondition,
+    RenderSubCondition
+  },
+  data() {
+    return {
+      conditionRules: conditionRules
+    }
+  },
+  mounted () {
+    console.log(conditionRules, '---conditionRules');
+
+    EventBus.$on('delete', (data) => {
+      console.log('delete events', data, getNode(this.conditionRules.subConditions, data))
+
+      let { result, resIndex } = getNode(this.conditionRules.subConditions, data)
+      result.splice(resIndex, 1)
+    })
+  },
 }
 </script>
 
@@ -24,5 +47,6 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+  font-size: 14px;
 }
 </style>
