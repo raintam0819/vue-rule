@@ -1,6 +1,6 @@
 <template>
   <div class="unite-condition">
-    <div class="unite-condition-content">
+    <div class="unite-condition-content" :class="{'is-root': uniteCondition.id === 'ROOT'}">
       <el-select
         class="unite-condition-select"
         v-model="value"
@@ -25,6 +25,9 @@
 
 <script>
 import EventBus from "../utils/eventBus";
+import { Condition } from '../constructor/index'
+import { NORMAL, OR, AND } from '../constants/conditionType'
+import md5 from 'md5'
 
 export default {
   name: "UniteCondition",
@@ -111,7 +114,15 @@ export default {
      * 添加条件
      */
     handleAddCondition() {
-      let defaultCondition = { id: "123", type: "normal" };
+      let defaultCondition = new Condition({
+        id: md5('' + Date.now() + Math.random()),
+        type: NORMAL,
+        expression: {
+          left: {},
+          operator: {},
+          right: {}
+        }
+      })
       this.uniteCondition.subConditions = [
         ...this.uniteCondition.subConditions,
         defaultCondition,
@@ -122,7 +133,7 @@ export default {
      * 添加联合条件
      */
     handleAddUniteCondition() {
-      let defaultUniteCondition = { id: "123", type: "or", subConditions: [] };
+      let defaultUniteCondition = new Condition({ id: md5('' + Date.now() + Math.random()), type: OR });
       this.uniteCondition.subConditions = [
         ...this.uniteCondition.subConditions,
         defaultUniteCondition,
@@ -163,7 +174,13 @@ export default {
     background-color: #c9c9c9;
     transform: translateX(-100%);
   }
+  &.is-root {
+    &::before {
+      display: none;
+    }
+  }
 }
+
 .unite-condition-select {
   width: 80px;
 }

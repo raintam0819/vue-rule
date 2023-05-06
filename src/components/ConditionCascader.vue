@@ -4,7 +4,7 @@
     <el-cascader
       ref="cascader"
       class="cascader"
-      v-model="value"
+      v-model="localValue"
       :options="options"
       @change="handleCascaderChange"
       :style="{ width: width }"
@@ -17,9 +17,15 @@ import { mockFuncs, mockVariables, mockConstants } from "../conditionRules";
 import { getFathersById } from '../utils'
 export default {
   name: "ConditionCascader",
+  props: {
+    value: {
+      type: Array | Object,
+      default: () => []
+    }
+  },
   data() {
     return {
-      value: '',
+      localValue: '',
 
       curInputDom: null,
       
@@ -28,11 +34,11 @@ export default {
   },
   computed: {
     options() {
-      const Input = {
-        value: "input",
-        label: "输入值",
-        children: null,
-      };
+      // const Input = {
+      //   value: "input",
+      //   label: "输入值",
+      //   children: null,
+      // };
 
       const Funcs = {
         value: "funcs",
@@ -46,12 +52,13 @@ export default {
         children: mockVariables,
       };
 
-      const Constants = {
-        value: "constants",
-        label: "选择常量",
-        children: mockConstants,
-      };
-      return [Input, Variables, Constants, Funcs];
+      // const Constants = {
+      //   value: "constants",
+      //   label: "选择常量",
+      //   children: mockConstants,
+      // };
+      // return [Input, Variables, Constants, Funcs];
+      return [Variables, Funcs];
     }
   },
   methods: {
@@ -61,11 +68,15 @@ export default {
      */
     handleCascaderChange(value) {
       const nodeList = getFathersById(value[value.length - 1], this.options, 'value')
+      console.log('nodeList', nodeList);
       setTimeout(() => {
         let text = nodeList.map(item => item.label)
         text.shift()
-        this.curInputDom.value = text.join('.')
+        if (text.length) {
+          this.curInputDom.value = text.join('.')
+        }
         this.width = (12 * (this.curInputDom.value.length - text.length + 1)) + ((text.length - 1) * 5) +  'px'
+        this.$emit('update:value', value)
       })
     }
   },
@@ -80,6 +91,10 @@ export default {
     
     this.$refs.cascader.$children[0].$el.removeChild(suffixDom)
     this.curInputDom.value = '请选择值类型'
+
+    this.localValue = this.value
+
+    this.handleCascaderChange(this.localValue)
   },
 };
 </script>
@@ -90,6 +105,10 @@ export default {
   padding: 0 5px;
   cursor: pointer;
   // user-select: none;
+  ::v-deep .el-input__inner{
+    color: #409eff;
+    font-weight: 600;
+  }
   .cascader {
     // width: 1px;
     // overflow: hidden;

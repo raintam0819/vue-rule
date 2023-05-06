@@ -1,32 +1,14 @@
 <template>
   <div class="condition">
     <div class="condition-content">
-      <!-- <div class="cascader-container">
-        <span class="cascader-text" @click.self="handleShowCascader">{{ text || '请选择值类型' }}</span>
-        <el-cascader
-          ref="cascader"
-          class="cascader"
-          v-model="value"
-          :options="options"
-          @visible-change="handleVisibleChange"
-          @change="handleCascaderChange"
-        ></el-cascader>
-      </div> -->
-      <condition-cascader></condition-cascader>
-      <el-select v-model="value1" placeholder="请选择">
-        <el-option
-          v-for="item in operate"
-          :key="item.charator"
-          :label="item.label"
-          :value="item.charator"
-        >
-        </el-option>
-      </el-select>
-      <el-cascader
-        @visible-change="handleVisibleChange"
-        v-model="value2"
-        :options="options"
-      ></el-cascader>
+      <!-- 表达式 left -->
+      <condition-cascader :value.sync="expressionLeftValue"></condition-cascader>
+
+      <!-- operator 操作 -->
+      <operator :value.sync="expressionOperator"></operator>
+
+      <!-- 表达式 right -->
+      <condition-cascader :value.sync="expressionRightValue"></condition-cascader>
       <span class="delete-text" @click="handleDelete">删除</span>
     </div>
   </div>
@@ -39,11 +21,13 @@ import { OPERATE } from "../constants/valueType";
 import { getFathersById } from '../utils'
 
 import ConditionCascader from './ConditionCascader'
+import Operator from './Operator'
 
 export default {
   name: "Condition",
   components: {
     ConditionCascader,
+    Operator
   },
   props: {
     condition: {
@@ -90,6 +74,36 @@ export default {
       };
       return [Input, Variables, Constants, Funcs];
     },
+
+    // 表单式左侧
+    expressionLeftValue: {
+      get() {
+        return this.condition.expression?.left?.value || {}
+      },
+      set(value) {
+        this.condition.expression.left.value = value
+      }
+    },
+
+    // 表达式右侧
+    expressionRightValue: {
+      get() {
+        return this.condition.expression?.right?.value || {}
+      },
+      set(value) {
+        this.condition.expression.right.value = value
+      }
+    },
+
+    // 操作符
+    expressionOperator: {
+      get() {
+        return this.condition.expression?.operator || {}
+      },
+      set(value) {
+        this.condition.expression.operator = value
+      }
+    }
   },
   methods: {
     handleDelete() {
@@ -177,6 +191,7 @@ export default {
     margin-left: 8px;
     cursor: pointer;
     width: 30px;
+    font-weight: 600;
   }
 }
 </style>
