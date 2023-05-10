@@ -7,6 +7,7 @@ const rules = {
       type: 'normal',
       expression: {
         left: {
+          id: 1,
           type: 'variable',
           value: ["variables","kehu","_dingdan","_shuliang"],
           label: '客户.性别',
@@ -14,7 +15,7 @@ const rules = {
             {
               mathSign: '%',
               type: 'input',
-              value: '123'
+              value: '100'
             },
             {
               mathSign: '%',
@@ -39,7 +40,23 @@ const rules = {
           charator: '==',
         },
         right: {
-          value: ["variables","dingdan","shuliang"]
+          id: 2,
+          type: 'variable',
+          value: ["variables","kehu","_dingdan","_shuliang"],
+          label: '客户.性别',
+          calcList: [
+            {
+              mathSign: '%',
+              type: 'input',
+              value: '20'
+            },
+            {
+              mathSign: '%',
+              type: 'variable',
+              value: ["variables","kehu","xingbie"],
+              label: '客户.订单.性别'
+            },
+          ],
         }
         // right: {
         //   id: '769dfa8a8013d8987735d542df188021',

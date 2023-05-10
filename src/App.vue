@@ -40,10 +40,10 @@ export default {
       conditionRules
     }
   },
-  mounted () {
+  created() {
     // console.log(new Condition(conditionRules), '---conditionRules');
-    // this.conditionRules.forEach(item => item.rootCondition = new Condition(item.rootCondition))
-    // console.log(conditionRules, '---conditionRules1')
+    this.conditionRules.forEach(item => item.rootCondition = new Condition(item.rootCondition))
+    console.log(conditionRules, '---conditionRules1')
     
     EventBus.$on('delete', (data) => {
       console.log('delete events', data, getNode(this.conditionRules.subConditions, data))

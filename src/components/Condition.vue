@@ -8,7 +8,8 @@
       <operator :value.sync="expressionOperator"></operator>
 
       <!-- 表达式 right -->
-      <condition-cascader :value.sync="expressionRightValue" :expression="expressionLeftValue"></condition-cascader>
+      <condition-cascader :value.sync="expressionRightValue" :expression="expressionRightValue"></condition-cascader>
+
       <span class="delete-text" @click="handleDelete">删除</span>
     </div>
   </div>
@@ -88,10 +89,10 @@ export default {
     // 表达式右侧
     expressionRightValue: {
       get() {
-        return this.condition.expression?.right?.value || {}
+        return this.condition.expression?.right || {}
       },
       set(value) {
-        this.condition.expression.right.value = value
+        this.condition.expression.right = value
       }
     },
 

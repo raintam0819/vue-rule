@@ -1,3 +1,4 @@
+import { INPUT } from '@/constants/valueType';
 import { AND, OR, NORMAL } from '../constants/conditionType'
 import { VARIABLE, FUNC } from '../constants/conditionType'
 
@@ -39,10 +40,18 @@ class Condition {
 }
 
 class ValueType {
-  constructor({ id, type, value }) {
+  constructor({ id, type, value, label, calcList }) {
     this.id = id;
     this.type = type;
-    this.value = this.init(value);
+    this.value = value;
+    this.label = label || ''
+    this.calcList = []
+
+    if (calcList?.length) {
+      this.calcList = Array.isArray(calcList)
+        ? calcList.map(calc => new CalcType(calc))
+        : [];
+    }
   }
 
   get isVariableType() {
@@ -51,6 +60,10 @@ class ValueType {
 
   get isFuncType() {
     return this.type === FUNC;
+  }
+
+  get isInputType() {
+    return this.type === INPUT;
   }
 
   getValue() {
@@ -88,6 +101,22 @@ class ValueType {
   }
 }
 
+class CalcType {
+  constructor({ mathSign, type, value, label }) {
+    console.log('mathSign, type, value', mathSign, type, value);
+    this.mathSign = mathSign;
+    this.type = type;
+    this.value = value;
+    this.label = label
+    this.blur = true
+  }
+
+  get isInputType() {
+    return this.type === INPUT;
+  }
+}
+
 export {
-  Condition
+  Condition,
+  CalcType
 }
