@@ -2,13 +2,13 @@
   <div class="condition">
     <div class="condition-content">
       <!-- 表达式 left -->
-      <condition-cascader :value.sync="expressionLeftValue"></condition-cascader>
+      <condition-cascader :value.sync="expressionLeftValue" :expression="expressionLeftValue"></condition-cascader>
 
       <!-- operator 操作 -->
       <operator :value.sync="expressionOperator"></operator>
 
       <!-- 表达式 right -->
-      <condition-cascader :value.sync="expressionRightValue"></condition-cascader>
+      <condition-cascader :value.sync="expressionRightValue" :expression="expressionLeftValue"></condition-cascader>
       <span class="delete-text" @click="handleDelete">删除</span>
     </div>
   </div>
@@ -78,10 +78,10 @@ export default {
     // 表单式左侧
     expressionLeftValue: {
       get() {
-        return this.condition.expression?.left?.value || {}
+        return this.condition.expression?.left || {}
       },
       set(value) {
-        this.condition.expression.left.value = value
+        this.condition.expression.left = value
       }
     },
 
@@ -109,35 +109,6 @@ export default {
     handleDelete() {
       EventBus.$emit("delete", this.condition);
     },
-
-    /**
-     * 级联选择器展示
-     * @param {Boolean} visible 是否下拉出现
-     */
-    handleVisibleChange(visible) {
-      console.log('visible', visible);
-      this.visible = visible;
-    },
-
-    handleShowCascader(e) {
-      // console.log(this.$refs.cascader)
-      console.log("event toggle", this.visible, this.$refs.cascader.dropDownVisible);
-      this.$refs.cascader.toggleDropDownVisible(!this.$refs.cascader.dropDownVisible);
-    },
-
-    /**
-     * 层级菜单选项改变
-     * @param {String} value 选中的值
-     */
-    handleCascaderChange(value) {
-      console.log('value', value);
-      // console.log('value getFathersById', getFathersById(value[value.length - 1], this.options, 'value'));
-      const nodeList = getFathersById(value[value.length - 1], this.options, 'value')
-      
-      this.text = nodeList.map(item => item.label)
-      this.text.pop()
-      this.text = this.text.join('.')
-    }
   },
   mounted() {
     // console.log(mockFuncs, mockVariables, mockConstants);
@@ -158,15 +129,18 @@ export default {
     width: 10px;
     height: 2px;
     left: 0;
-    top: 50%;
+    // top: 50%;
+    top: 25px;
     background-color: #c9c9c9;
     transform: translateX(-100%);
   }
 
   .condition-content {
-    height: 50px;
+    min-height: 50px;
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 5px;
     .cascader-container {
       position: relative;
       padding: 0 5px;

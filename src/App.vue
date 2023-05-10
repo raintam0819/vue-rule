@@ -1,14 +1,15 @@
 <template>
   <div id="app">
-    <div class="rule-box">
+    <div class="rule-box" v-for="(item, index) in conditionRules" :key="index">
       <div>
         <span class="title">如果</span>
-        <unite-condition :uniteCondition="conditionRules" style="display: flex;">
-          <render-sub-condition :conditions="conditionRules.subConditions"></render-sub-condition>
+        <unite-condition :uniteCondition="item.rootCondition" style="display: flex;">
+          <render-sub-condition :conditions="item.rootCondition.subConditions"></render-sub-condition>
         </unite-condition>
       </div>
       <div>
         <span class="title">那么</span>
+        {{ item.trueActions }}123123
       </div>
       <div>
         <span class="title">否则</span>
@@ -18,7 +19,7 @@
 </template>
 
 <script>
-import conditionRules from './conditionRules.js'
+import { conditionRules } from './conditionRules.js'
 
 import UniteCondition from './components/UniteCondition'
 import RenderSubCondition from './components/renderSubCondition'
@@ -35,12 +36,15 @@ export default {
   },
   data() {
     return {
-      conditionRules: new Condition(conditionRules)
+      // conditionRules: new Condition(conditionRules),
+      conditionRules
     }
   },
   mounted () {
-    console.log(new Condition(conditionRules), '---conditionRules');
-
+    // console.log(new Condition(conditionRules), '---conditionRules');
+    // this.conditionRules.forEach(item => item.rootCondition = new Condition(item.rootCondition))
+    // console.log(conditionRules, '---conditionRules1')
+    
     EventBus.$on('delete', (data) => {
       console.log('delete events', data, getNode(this.conditionRules.subConditions, data))
 

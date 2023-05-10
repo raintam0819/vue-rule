@@ -7,7 +7,22 @@ const rules = {
       type: 'normal',
       expression: {
         left: {
-          value: ["variables","kehu","_dingdan","_shuliang"]
+          type: 'variable',
+          value: ["variables","kehu","_dingdan","_shuliang"],
+          label: '客户.性别',
+          calcList: [
+            {
+              mathSign: '%',
+              type: 'input',
+              value: '123'
+            },
+            {
+              mathSign: '%',
+              type: 'variable',
+              value: ["variables","kehu","xingbie"],
+              label: '客户.订单.性别'
+            },
+          ],
         },
         // left: {
         //   id: 'fb842a8d3730e7cd5a919fc8a0014214',
@@ -345,54 +360,113 @@ const rules = {
     //     },
     //   ]
     // }
-  ],
-  trueActions: [
-    {
-      id: '4c97fb7f6890bbd8e64891ab61330195',
-      type: 'variableAssign',
-      value: {
-        left: {
-          id: '9144ca3d13a17d06f6812ebb2e90bd76',
-          type: 'variable',
-          value: {
-            groupCode: 'kehu',
-            groupLabel: '客户',
-            propCode: '',
-            propLabel: ''
-          }
-        },
-        right: {
-          id: 'a1094e6a993c42cc35a0f2419e5399f2',
-          type: 'input',
-          value: '高级客户'
-        }
-      }
-    },
-    {
-      id: 'c13208bdd305314a960bb16a86c7d2c3',
-      type: 'variableAssign',
-      value: {
-        left: {
-          id: '40d054f6f3daf664e2ab4467db30e845',
-          type: 'variable',
-          value: {
-            groupCode: ['dingdan'],
-            groupLabel: '订单',
-            propCode: 'jiage',
-            propLabel: '价格'
-          }
-        },
-        right: {
-          id: 'dd26473c22139ba91b54212cdb281a19',
-          type: 'input',
-          value: '50'
-        }
-      }
-    }
-  ],
+  ]
 }
 
+const conditionRules = [
+  {
+    id: '123',
+    name: 'tzd',
+    rootCondition: rules,
+    trueActions: [
+      {
+        id: '4c97fb7f6890bbd8e64891ab61330195',
+        type: 'variableAssign',
+        value: {
+          left: {
+            id: '9144ca3d13a17d06f6812ebb2e90bd76',
+            type: 'variable',
+            value: {
+              groupCode: 'kehu',
+              groupLabel: '客户',
+              propCode: '',
+              propLabel: ''
+            }
+          },
+          right: {
+            id: 'a1094e6a993c42cc35a0f2419e5399f2',
+            type: 'input',
+            value: '高级客户'
+          }
+        }
+      },
+      {
+        id: 'c13208bdd305314a960bb16a86c7d2c3',
+        type: 'variableAssign',
+        value: {
+          left: {
+            id: '40d054f6f3daf664e2ab4467db30e845',
+            type: 'variable',
+            value: {
+              groupCode: ['dingdan'],
+              groupLabel: '订单',
+              propCode: 'jiage',
+              propLabel: '价格'
+            }
+          },
+          right: {
+            id: 'dd26473c22139ba91b54212cdb281a19',
+            type: 'input',
+            value: '50'
+          }
+        }
+      }
+    ]
+  },
+  // {
+  //   id: '123',
+  //   name: 'tzd',
+  //   rootCondition: rules,
+  //   trueActions: [
+  //     {
+  //       id: '4c97fb7f6890bbd8e64891ab61330195',
+  //       type: 'variableAssign',
+  //       value: {
+  //         left: {
+  //           id: '9144ca3d13a17d06f6812ebb2e90bd76',
+  //           type: 'variable',
+  //           value: {
+  //             groupCode: 'kehu',
+  //             groupLabel: '客户',
+  //             propCode: '',
+  //             propLabel: ''
+  //           }
+  //         },
+  //         right: {
+  //           id: 'a1094e6a993c42cc35a0f2419e5399f2',
+  //           type: 'input',
+  //           value: '高级客户'
+  //         }
+  //       }
+  //     },
+  //     {
+  //       id: 'c13208bdd305314a960bb16a86c7d2c3',
+  //       type: 'variableAssign',
+  //       value: {
+  //         left: {
+  //           id: '40d054f6f3daf664e2ab4467db30e845',
+  //           type: 'variable',
+  //           value: {
+  //             groupCode: ['dingdan'],
+  //             groupLabel: '订单',
+  //             propCode: 'jiage',
+  //             propLabel: '价格'
+  //           }
+  //         },
+  //         right: {
+  //           id: 'dd26473c22139ba91b54212cdb281a19',
+  //           type: 'input',
+  //           value: '50'
+  //         }
+  //       }
+  //     }
+  //   ]
+  // }
+]
+
 export default rules
+
+export { conditionRules }
 
 export const mockFuncs = [
   {
