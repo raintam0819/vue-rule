@@ -9,7 +9,7 @@
     <div class="calc-box" v-for="(item, index) in expression.calcList" :key="index">
 
       <!-- 符号选择 + - x % -->
-      <el-select class="math-box" v-model="item.mathSign" placeholder="">
+      <el-select class="math-box" v-model="item.mathSign" placeholder="" :class="{ 'no-border': item.mathSign }">
         <el-option
           v-for="item in mathOptions"
           :key="item.value"
@@ -229,6 +229,10 @@ export default {
 
   .add-calc {
     margin-left: 5px;
+  }
+
+  .no-border {
+    border: none;
   }
 }
 </style>
